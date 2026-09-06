@@ -28,7 +28,7 @@ h2 { font-size: 1.35rem; margin-bottom: 20px; color: var(--text-main); border-le
 label { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main); }
 input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; background: #fff; }
 textarea { resize: vertical; height: 140px; }
-input:focus, select:focus, textareafocus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(30,58,138,0.1); }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(30,58,138,0.1); }
 
 .btn-action { width: 100%; background: var(--primary); color: #fff; border: none; padding: 14px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: background 0.2s; }
 .btn-action:hover { background: var(--primary-hover); }

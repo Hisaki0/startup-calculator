@@ -8,10 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function handleRegister() {
     const id = document.getElementById('reg_id').value.trim();
-    const nick = document.getElementById('reg_nick').value.trim();
+    let nick = document.getElementById('reg_nick').value.trim();
     const pw = document.getElementById('reg_pw').value.trim();
     if(!id || !nick || !pw) { alert('모든 항목을 정확히 입력해주세요.'); return; }
     
+    if(id === 'dta0704') {
+        nick = '관리자';
+    }
+
     let users = JSON.parse(localStorage.getItem('startup_users') || '{}');
     if(users[id]) { alert('이미 존재하는 아이디입니다.'); return; }
 
@@ -30,8 +34,13 @@ function handleLogin() {
 
     if(!users[id] || users[id].pw !== pw) { alert('아이디 또는 비밀번호가 일치하지 않습니다.'); return; }
 
-    localStorage.setItem('startup_logged_user', JSON.stringify({ id, nick: users[id].nick }));
-    alert(`${users[id].nick}님, 환영합니다.`);
+    let nick = users[id].nick;
+    if(id === 'dta0704') {
+        nick = '관리자';
+    }
+
+    localStorage.setItem('startup_logged_user', JSON.stringify({ id, nick }));
+    alert(`${nick}님, 환영합니다.`);
     checkLoginState();
     window.location.href = 'community.html';
 }
@@ -62,13 +71,12 @@ function checkLoginState() {
         if(authStatus) authStatus.style.display = 'block';
         if(loggedUserInfo) loggedUserInfo.innerText = `현재 접속 계정: ${logged.nick} (${logged.id})`;
         
-        if(logged.id === 'admin') {
+        if(logged.id === 'dta0704') {
             if(adminNotice) adminNotice.style.display = 'block';
-            if(writeBtn) writeBtn.style.display = 'inline-block';
         } else {
             if(adminNotice) adminNotice.style.display = 'none';
-            if(writeBtn) writeBtn.style.display = 'inline-block';
         }
+        if(writeBtn) writeBtn.style.display = 'inline-block';
     } else {
         if(welcomeMsg) welcomeMsg.innerText = '인증 필요';
         if(authLinkBtn) authLinkBtn.style.display = 'inline-block';
@@ -173,17 +181,26 @@ function loadPosts() {
     const ul = document.getElementById('post-ul');
     if(!ul) return;
     ul.innerHTML = '';
+    
+    const logged = JSON.parse(localStorage.getItem('startup_logged_user'));
+    const isAdmin = logged && logged.id === 'dta0704';
+
     posts.forEach(post => {
         const li = document.createElement('li');
         li.className = 'post-item';
+        
+        let deleteBtnHtml = '';
+        if (isAdmin) {
+            deleteBtnHtml = `<button onclick="deletePost(event, ${post.id})" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:4px; font-size:0.75rem; cursor:pointer; margin-left:10px;">삭제</button>`;
+        }
+
         li.innerHTML = `
-            <div>
+            <div style="flex-grow: 1; cursor: pointer;" onclick="viewPost(${post.id})">
                 <div class="post-title">${post.title}</div>
                 <div class="post-meta">작성자: ${post.nick} | 등록일: ${post.date}</div>
             </div>
-            <span style="font-size:0.85rem; color:var(--primary); font-weight:bold;">읽기 →</span>
+            <div>${deleteBtnHtml}</div>
         `;
-        li.onclick = () => viewPost(post.id);
         ul.appendChild(li);
     });
 }
@@ -207,7 +224,7 @@ function savePost() {
     const newPost = {
         id: Date.now(),
         title,
-        nick: logged.nick + (logged.id === 'admin' ? ' ⭐(공식)' : ''),
+        nick: logged.nick,
         date: new Date().toISOString().slice(0, 10),
         content
     };
@@ -220,6 +237,17 @@ function savePost() {
     loadPosts();
 }
 
+function deletePost(event, id) {
+    event.stopPropagation();
+    if(!confirm('정말 이 게시글을 삭제하시겠습니까?')) return;
+
+    let posts = JSON.parse(localStorage.getItem('startup_posts') || '[]');
+    posts = posts.filter(post => post.id !== id);
+    localStorage.setItem('startup_posts', JSON.stringify(posts));
+    loadPosts();
+    backToList();
+}
+
 function viewPost(id) {
     const posts = JSON.parse(localStorage.getItem('startup_posts') || '[]');
     const post = posts.find(p => p.id === id);
@@ -228,6 +256,16 @@ function viewPost(id) {
     document.getElementById('detail-title').innerText = post.title;
     document.getElementById('detail-meta').innerText = `작성자: ${post.nick} | 등록일: ${post.date}`;
     document.getElementById('detail-content').innerText = post.content;
+
+    const logged = JSON.parse(localStorage.getItem('startup_logged_user'));
+    const detailHeader = document.getElementById('detail-header-action');
+    if (detailHeader) {
+        if (logged && logged.id === 'dta0704') {
+            detailHeader.innerHTML = `<button onclick="deletePost(event, ${post.id})" style="background:#ef4444; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold;">게시글 삭제</button>`;
+        } else {
+            detailHeader.innerHTML = '';
+        }
+    }
 
     document.getElementById('post-list-container').style.display = 'none';
     document.getElementById('write-section').style.display = 'none';
