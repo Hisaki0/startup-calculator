@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadUsersFromGitHub(); // 사이트 켤 때 깃허브에서 최신 회원 목록 동기화
+    await fetchUsersFromServer(); // 서버를 통해 최신 회원 목록 동기화
     initDefaultPosts();
     checkLoginState();
     if(document.getElementById('post-ul')) {
@@ -7,78 +7,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
-// 0. 브라우저에 안전하게 저장된 토큰 가져오기
-function getSavedToken() {
-    return localStorage.getItem('github_token') || '';
-}
-
-function getSavedRepo() {
-    return localStorage.getItem('github_repo') || 'Hisaki0/startup-calculator'; // 본인 레포지토리 기본값
-}
-
-// 1. 깃허브에서 회원 데이터 불러오기 (백업본 동기화)
-async function loadUsersFromGitHub() {
-    const GITHUB_TOKEN = getSavedToken();
-    const REPO_NAME = getSavedRepo();
-    if(!GITHUB_TOKEN) return;
-
+// 서버(Vercel Serverless API)에서 회원 목록 가져오기
+async function fetchUsersFromServer() {
     try {
-        const response = await fetch(`https://api.github.com/repos/${REPO_NAME}/contents/users.json`, {
-            headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-        });
-        if(response.ok) {
-            const data = await response.json();
-            const decodedContent = JSON.parse(decodeURIComponent(escape(atob(data.content))));
-            localStorage.setItem('startup_users', JSON.stringify(decodedContent));
+        const response = await fetch('/api/users');
+        if (response.ok) {
+            const usersObj = await response.json();
+            localStorage.setItem('startup_users', JSON.stringify(usersObj));
         }
     } catch (e) {
-        console.log('로컬 저장소 데이터를 기본 사용합니다.');
+        console.error('서버 동기화 실패, 로컬 데이터를 사용합니다.', e);
     }
 }
 
-// 2. 깃허브에 회원 데이터 자동 백업하기 (업데이트)
-async function saveUsersToGitHub(usersObj) {
-    const GITHUB_TOKEN = getSavedToken();
-    const REPO_NAME = getSavedRepo();
-    if(!GITHUB_TOKEN) return; // 토큰이 없으면 백업 건너뜀 (로컬 정상 작동)
-
+// 서버(Vercel Serverless API)를 통해 회원 목록 업데이트하기
+async function saveUsersToServer(usersObj) {
     try {
-        const getRes = await fetch(`https://api.github.com/repos/${REPO_NAME}/contents/users.json`, {
-            headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+        const response = await fetch('/api/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(usersObj)
         });
-        const fileData = await getRes.json();
-        const sha = fileData.sha;
-
-        const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(usersObj, null, 2))));
-
-        await fetch(`https://api.github.com/repos/${REPO_NAME}/contents/users.json`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `token ${GITHUB_TOKEN}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: 'Auto-backup user database',
-                content: contentEncoded,
-                sha: sha
-            })
-        });
+        if (!response.ok) {
+            console.error('서버 저장 실패');
+        }
     } catch (e) {
-        console.error('깃허브 백업 실패:', e);
+        console.error('서버 통신 오류:', e);
     }
-}
-
-// 토큰 등록 함수 (관리자 전용 설정용)
-function saveGitHubConfig() {
-    const tokenInput = document.getElementById('setting_token').value.trim();
-    const repoInput = document.getElementById('setting_repo').value.trim();
-    if(!tokenInput) { alert('토큰을 입력해주세요.'); return; }
-    
-    localStorage.setItem('github_token', tokenInput);
-    if(repoInput) localStorage.setItem('github_repo', repoInput);
-    
-    alert('깃허브 연동 정보가 이 브라우저에 안전하게 저장되었습니다!');
-    location.reload();
 }
 
 async function handleRegister() {
@@ -97,10 +52,10 @@ async function handleRegister() {
     users[id] = { pw, nick };
     localStorage.setItem('startup_users', JSON.stringify(users));
     
-    // 회원가입 즉시 깃허브에 백업 저장!
-    await saveUsersToGitHub(users);
+    // 서버를 통해 깃허브에 즉시 백업 저장!
+    await saveUsersToServer(users);
 
-    alert('회원가입이 완료되었습니다. (깃허브 안전 백업 완료)');
+    alert('회원가입이 완료되었습니다. (서버 자동 백업 완료)');
     document.getElementById('reg_id').value = '';
     document.getElementById('reg_nick').value = '';
     document.getElementById('reg_pw').value = '';
@@ -231,7 +186,7 @@ async function executeResetPw() {
     users[targetId].pw = newPw;
     localStorage.setItem('startup_users', JSON.stringify(users));
     
-    await saveUsersToGitHub(users);
+    await saveUsersToServer(users);
 
     resBox.innerText = `✅ 비밀번호가 성공적으로 재설정되었습니다!`;
 }
