@@ -191,7 +191,7 @@ function loadPosts() {
         
         let deleteBtnHtml = '';
         if (isAdmin) {
-            deleteBtnHtml = `<button onclick="deletePost(event, ${post.id})" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:4px; font-size:0.75rem; cursor:pointer; margin-left:10px;">삭제</button>`;
+            deleteBtnHtml = `<button onclick="deletePost(event, ${post.id})" style="background:#7f1d1d; color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:0.75rem; cursor:pointer; margin-left:10px;">삭제</button>`;
         }
 
         li.innerHTML = `
@@ -261,7 +261,7 @@ function viewPost(id) {
     const detailHeader = document.getElementById('detail-header-action');
     if (detailHeader) {
         if (logged && logged.id === 'dta0704') {
-            detailHeader.innerHTML = `<button onclick="deletePost(event, ${post.id})" style="background:#ef4444; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold;">게시글 삭제</button>`;
+            detailHeader.innerHTML = `<button onclick="deletePost(event, ${post.id})" style="background:#7f1d1d; color:#fff; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-weight:bold;">게시글 삭제</button>`;
         } else {
             detailHeader.innerHTML = '';
         }
@@ -303,7 +303,7 @@ function calcLabor() {
     document.getElementById('l_worker_deduct').innerText = workerDeduct.toLocaleString() + ' 원';
     document.getElementById('l_net_pay').innerText = netPay.toLocaleString() + ' 원';
     document.getElementById('l_boss_insurance').innerText = bossInsurance.toLocaleString() + ' 원';
-    document.getElementById('l_total_expense').innerText = `💡 사장님 최종 월 총지출: ${totalExpense.toLocaleString()} 원`;
+    document.getElementById('l_total_expense').innerText = totalExpense.toLocaleString() + ' 원';
     document.getElementById('labor-result').style.display = 'block';
 }
 

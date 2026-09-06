@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Kit - 지분 희석 시뮬레이터</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5924680090368411" crossorigin="anonymous"></script>
+    <meta name="naver-site-verification" content="8bc5bc1fcde8ded1285e14e2f4ae3583fc9de1a2" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div>
+            <h1>Startup Kit</h1>
+            <p style="font-size:0.85rem; color:var(--text-sub);">프리미엄 비즈니스 인텔리전스</p>
+        </div>
+        <div class="user-panel" id="user-panel">
+            <span id="welcome-msg">인증 필요</span>
+            <a href="index.html#auth" id="auth-link-btn">로그인/가입</a>
+            <button id="logout-btn" style="display:none; background:#7f1d1d; color:#fff; border:none;" onclick="handleLogout()">로그아웃</button>
+        </div>
+    </header>
+
+    <div class="nav-bar">
+        <a href="index.html" class="nav-btn">세금 비교 계산기</a>
+        <a href="labor.html" class="nav-btn">인건비 계산기</a>
+        <a href="dilution.html" class="nav-btn active">지분 희석 계산기</a>
+        <a href="community.html" class="nav-btn">정보 & 커뮤니티</a>
+    </div>
+
+    <div class="card">
+        <h2>동업자 지분 및 투자 유치 희석 시뮬레이터</h2>
+        <div class="input-group"><label>본인 초기 지분율 (%)</label><input type="number" id="s_my_share" value="70"></div>
+        <div class="input-group"><label>동업자 초기 지분율 (%)</label><input type="number" id="s_partner_share" value="30"></div>
+        <div class="input-group"><label>외부 투자 유치로 발행할 신주 비율 (%)</label><input type="number" id="s_invest_share" value="20"></div>
+        <button class="btn-action" onclick="calcDilution()">지분 구조 변화 시뮬레이션</button>
+        <div class="result-box" id="dilution-result" style="display:none;">
+            <h3>🤝 투자 유치 후 최종 지분 배분</h3>
+            <div class="result-item"><span>본인 최종 지분율:</span> <span id="d_my_final">-</span></div>
+            <div class="result-item"><span>동업자 최종 지분율:</span> <span id="d_partner_final">-</span></div>
+            <div class="result-item"><span>외부 투자자 지분율:</span> <span id="d_invest_final">-</span></div>
+        </div>
+    </div>
+
+    <footer><p>&copy; 2026 Startup Kit. All rights reserved.</p></footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Kit - 인건비 시뮬레이터</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5924680090368411" crossorigin="anonymous"></script>
+    <meta name="naver-site-verification" content="8bc5bc1fcde8ded1285e14e2f4ae3583fc9de1a2" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <div>
+            <h1>Startup Kit</h1>
+            <p style="font-size:0.85rem; color:var(--text-sub);">프리미엄 비즈니스 인텔리전스</p>
+        </div>
+        <div class="user-panel" id="user-panel">
+            <span id="welcome-msg">인증 필요</span>
+            <a href="index.html#auth" id="auth-link-btn">로그인/가입</a>
+            <button id="logout-btn" style="display:none; background:#7f1d1d; color:#fff; border:none;" onclick="handleLogout()">로그아웃</button>
+        </div>
+    </header>
+
+    <div class="nav-bar">
+        <a href="index.html" class="nav-btn">세금 비교 계산기</a>
+        <a href="labor.html" class="nav-btn active">인건비 계산기</a>
+        <a href="dilution.html" class="nav-btn">지분 희석 계산기</a>
+        <a href="community.html" class="nav-btn">정보 & 커뮤니티</a>
+    </div>
+
+    <div class="card">
+        <h2>직원 4대보험 및 사업주 총지출 시뮬레이터</h2>
+        <div class="input-group"><label>직원 월 기본급 (세전)</label><input type="number" id="p_salary" value="3000000"></div>
+        <div class="input-group"><label>비과세 급여액 (식대 등)</label><input type="number" id="p_taxfree" value="200000"></div>
+        <button class="btn-action" onclick="calcLabor()">인건비 및 총지출 분석</button>
+        <div class="result-box" id="labor-result" style="display:none;">
+            <h3>💰 월 재무 지출 분석 리포트</h3>
+            <div class="result-item"><span>근로자 공제액 총합:</span> <span id="l_worker_deduct">-</span></div>
+            <div class="result-item" style="color: var(--gold);"><span>직원 실제 실수령액:</span> <span id="l_net_pay">-</span></div>
+            <hr style="border:0; border-top:1px dashed rgba(212,175,55,0.2); margin:10px 0;">
+            <div class="result-item"><span>사업주 부담 4대보험 총합:</span> <span id="l_boss_insurance">-</span></div>
+            <div class="total-row"><span>사장님 최종 월 총지출:</span> <span id="l_total_expense">-</span></div>
+        </div>
+    </div>
+
+    <footer><p>&copy; 2026 Startup Kit. All rights reserved.</p></footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
