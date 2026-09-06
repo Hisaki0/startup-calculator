@@ -3,443 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Startup Kit - 사장님을 위한 실무 툴킷 & 커뮤니티</title>
-    
-    <!-- 구글 애드센스 연동 스크립트 -->
+    <title>Startup Kit - 대한민국 사장님을 위한 실무 비즈니스 툴킷</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5924680090368411" crossorigin="anonymous"></script>
-    <!-- 네이버 서치어드바이저 소유권 확인 태그 -->
     <meta name="naver-site-verification" content="8bc5bc1fcde8ded1285e14e2f4ae3583fc9de1a2" />
     <meta name="google-site-verification" content="google2d5b738d552dc5df.html">
-
-    <style>
-        :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-sub: #64748b;
-            --border: #e2e8f0;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; padding: 20px; }
-        .container { max-width: 850px; margin: 0 auto; }
-        
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #fff; padding: 15px 20px; border-radius: 12px; border: 1px solid var(--border); }
-        header h1 { font-size: 1.5rem; color: var(--primary); }
-        .user-panel { font-size: 0.9rem; color: var(--text-sub); display: flex; gap: 10px; align-items: center; }
-        .user-panel button { padding: 6px 12px; font-size: 0.85rem; border: 1px solid var(--border); background: #f1f5f9; border-radius: 6px; cursor: pointer; }
-
-        /* 탭 메뉴 스타일 */
-        .tabs { display: flex; gap: 6px; margin-bottom: 20px; border-bottom: 2px solid var(--border); padding-bottom: 10px; overflow-x: auto; }
-        .tab-btn { background: #e2e8f0; border: none; padding: 10px 14px; font-size: 0.9rem; font-weight: bold; border-radius: 8px; cursor: pointer; color: var(--text-sub); white-space: nowrap; transition: all 0.2s; }
-        .tab-btn.active { background: var(--primary); color: #ffffff; }
-
-        /* 카드 스타일 */
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: none; margin-bottom: 20px; }
-        .card.active { display: block; }
-        
-        h2 { font-size: 1.2rem; margin-bottom: 16px; color: var(--text-main); border-left: 4px solid var(--primary); padding-left: 8px; }
-        
-        .input-group { margin-bottom: 14px; }
-        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; color: var(--text-main); }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; background: #fff; }
-        textarea { resize: vertical; height: 120px; }
-        input:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
-        
-        .btn-action { width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: background 0.2s; }
-        .btn-action:hover { background: var(--primary-hover); }
-
-        .result-box { margin-top: 20px; background: #f1f5f9; border-radius: 8px; padding: 14px; border: 1px solid #cbd5e1; }
-        .result-item { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; }
-        .result-item span:last-child { font-weight: bold; }
-        .total-row { border-top: 1px solid #cbd5e1; padding-top: 6px; margin-top: 6px; font-size: 1rem; font-weight: bold; color: #0f172a; }
-
-        /* 커뮤니티 및 게시판 스타일 */
-        .post-list { list-style: none; margin-top: 15px; }
-        .post-item { padding: 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.1s; }
-        .post-item:hover { background: #f8fafc; border-radius: 6px; }
-        .post-title { font-weight: bold; font-size: 1rem; color: var(--text-main); }
-        .post-meta { font-size: 0.8rem; color: var(--text-sub); margin-top: 4px; }
-        .post-detail { background: #fff; padding: 15px; border: 1px solid var(--border); border-radius: 8px; margin-top: 15px; }
-
-        footer { text-align: center; margin-top: 30px; font-size: 0.85rem; color: var(--text-sub); }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <div class="container">
     <header>
         <div>
             <h1>Startup Kit</h1>
-            <p style="font-size:0.85rem; color:#64748b;">사장님들을 위한 실무 툴킷 & 커뮤니티</p>
+            <p style="font-size:0.85rem; color:var(--text-sub);">실무 데이터 기반 비즈니스 인사이트 플랫폼</p>
         </div>
         <div class="user-panel" id="user-panel">
-            <span id="welcome-msg">로그인이 필요합니다</span>
-            <button onclick="switchTab(3)" id="login-nav-btn">로그인 / 가입</button>
+            <span id="welcome-msg">인증 필요</span>
+            <a href="index.html#auth" id="auth-link-btn">로그인/가입</a>
+            <button id="logout-btn" style="display:none; background:#ef4444; color:#fff; border:none;" onclick="handleLogout()">로그아웃</button>
         </div>
     </header>
 
-    <!-- 탭 네비게이션 -->
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab(0)">세금 계산기</button>
-        <button class="tab-btn" onclick="switchTab(1)">인건비 계산기</button>
-        <button class="tab-btn" onclick="switchTab(2)">지분 희석</button>
-        <button class="tab-btn" onclick="switchTab(4)">정보/커뮤니티</button>
-        <button class="tab-btn" onclick="switchTab(3)" id="auth-tab-btn">계정</button>
+    <div class="nav-bar">
+        <a href="index.html" class="nav-btn active">실무 계산기</a>
+        <a href="community.html" class="nav-btn">정보 & 커뮤니티</a>
+        <a href="index.html#auth" class="nav-btn" id="nav-auth-btn">계정 관리</a>
     </div>
 
-    <!-- 1. 과세 비교 계산기 -->
-    <div class="card active" id="card-0">
-        <h2>간이과세자 vs 일반과세자 유리함 판정</h2>
-        <div class="input-group">
-            <label>연간 예상 매출액 (공급대가, 부가세 포함)</label>
-            <input type="number" id="v_sales" value="80000000">
-        </div>
-        <div class="input-group">
-            <label>연간 매입액 (증빙 기준)</label>
-            <input type="number" id="v_purchase" value="30000000">
-        </div>
-        <div class="input-group">
-            <label>업종 선택</label>
-            <select id="v_industry">
-                <option value="0.1">소매업, 음식점업 등 (부가가치율 10%)</option>
-                <option value="0.2">제조업, 숙박업 등 (부가가치율 20%)</option>
-                <option value="0.4">서비스업, 부동산임대업 등 (부가가치율 40%)</option>
-            </select>
-        </div>
-        <button class="btn-action" onclick="calcTax()">비교하기</button>
+    <div class="card">
+        <h2>간이과세자 vs 일반과세자 정밀 비교</h2>
+        <div class="input-group"><label>연간 예상 매출액 (공급대가, 부가세 포함)</label><input type="number" id="v_sales" value="80000000"></div>
+        <div class="input-group"><label>연간 매입액 (적격증빙 기준)</label><input type="number" id="v_purchase" value="30000000"></div>
+        <div class="input-group"><label>업종 선택</label><select id="v_industry"><option value="0.1">소매업, 음식점업 등 (부가가치율 10%)</option><option value="0.2">제조업, 숙박업 등 (부가가치율 20%)</option><option value="0.4">서비스업, 부동산임대업 등 (부가가치율 40%)</option></select></div>
+        <button class="btn-action" onclick="calcTax()">세금 유불리 분석 실행</button>
         <div class="result-box" id="tax-result" style="display:none;">
-            <h3>📊 예상 부가가치세 비교 결과</h3>
-            <div class="result-item"><span>간이과세자 납부세액:</span> <span id="res_gani">-</span></div>
-            <div class="result-item"><span>일반과세자 납부세액:</span> <span id="res_general">-</span></div>
+            <h3>📊 부가가치세 시뮬레이션 결과</h3>
+            <div class="result-item"><span>간이과세자 예상 납부세액:</span> <span id="res_gani">-</span></div>
+            <div class="result-item"><span>일반과세자 예상 납부세액:</span> <span id="res_general">-</span></div>
             <div class="total-row" id="res_winner">-</div>
         </div>
     </div>
 
-    <!-- 2. 인건비 계산기 -->
-    <div class="card" id="card-1">
-        <h2>직원 4대보험 및 사장님 총지출 계산기</h2>
-        <div class="input-group">
-            <label>직원 월 기본급 (세전)</label>
-            <input type="number" id="p_salary" value="3000000">
-        </div>
-        <div class="input-group">
-            <label>비과세 급여액 (식대 등)</label>
-            <input type="number" id="p_taxfree" value="200000">
-        </div>
-        <button class="btn-action" onclick="calcLabor()">인건비 계산하기</button>
+    <div class="card">
+        <h2>직원 4대보험 및 사업주 총지출 시뮬레이터</h2>
+        <div class="input-group"><label>직원 월 기본급 (세전)</label><input type="number" id="p_salary" value="3000000"></div>
+        <div class="input-group"><label>비과세 급여액 (식대 등)</label><input type="number" id="p_taxfree" value="200000"></div>
+        <button class="btn-action" onclick="calcLabor()">인건비 및 총지출 분석</button>
         <div class="result-box" id="labor-result" style="display:none;">
-            <h3>💰 월 실제 지출 및 실수령액 분석</h3>
+            <h3>💰 월 재무 지출 분석 리포트</h3>
             <div class="result-item"><span>근로자 공제액 총합:</span> <span id="l_worker_deduct">-</span></div>
             <div class="result-item" style="color: var(--primary);"><span>직원 실제 실수령액:</span> <span id="l_net_pay">-</span></div>
-            <hr style="border:0; border-top:1px dashed #cbd5e1; margin:8px 0;">
+            <hr style="border:0; border-top:1px dashed var(--border); margin:8px 0;">
             <div class="result-item"><span>사업주 부담 4대보험 총합:</span> <span id="l_boss_insurance">-</span></div>
             <div class="total-row" id="l_total_expense">-</div>
         </div>
     </div>
 
-    <!-- 3. 지분 희석 계산기 -->
-    <div class="card" id="card-2">
-        <h2>동업자 지분 및 투자금 희석 시뮬레이터</h2>
-        <div class="input-group">
-            <label>내 초기 지분율 (%)</label>
-            <input type="number" id="s_my_share" value="70">
-        </div>
-        <div class="input-group">
-            <label>동업자 초기 지분율 (%)</label>
-            <input type="number" id="s_partner_share" value="30">
-        </div>
-        <div class="input-group">
-            <label>외부 투자 유치로 새로 발행할 지분 비율 (%)</label>
-            <input type="number" id="s_invest_share" value="20">
-        </div>
-        <button class="btn-action" onclick="calcDilution()">지분 희석 계산하기</button>
+    <div class="card">
+        <h2>동업자 지분 및 투자 유치 희석 시뮬레이터</h2>
+        <div class="input-group"><label>본인 초기 지분율 (%)</label><input type="number" id="s_my_share" value="70"></div>
+        <div class="input-group"><label>동업자 초기 지분율 (%)</label><input type="number" id="s_partner_share" value="30"></div>
+        <div class="input-group"><label>외부 투자 유치로 발행할 신주 비율 (%)</label><input type="number" id="s_invest_share" value="20"></div>
+        <button class="btn-action" onclick="calcDilution()">지분 구조 변화 시뮬레이션</button>
         <div class="result-box" id="dilution-result" style="display:none;">
-            <h3>🤝 투자 유치 후 최종 지분 구조</h3>
-            <div class="result-item"><span>내 최종 지분율:</span> <span id="d_my_final">-</span></div>
+            <h3>🤝 투자 유치 후 최종 지분 배분</h3>
+            <div class="result-item"><span>본인 최종 지분율:</span> <span id="d_my_final">-</span></div>
             <div class="result-item"><span>동업자 최종 지분율:</span> <span id="d_partner_final">-</span></div>
-            <div class="result-item"><span>외부 투자자 최종 지분율:</span> <span id="d_invest_final">-</span></div>
+            <div class="result-item"><span>외부 투자자 지분율:</span> <span id="d_invest_final">-</span></div>
         </div>
     </div>
 
-    <!-- 4. 로그인 및 회원가입 탭 -->
-    <div class="card" id="card-3">
-        <h2>회원 인증 / 가입</h2>
+    <div class="card" id="auth">
+        <h2>사장님 계정 인증 및 회원가입</h2>
         <div id="auth-forms">
-            <div style="margin-bottom: 20px;">
-                <h3 style="font-size:1rem; margin-bottom:10px; color:var(--primary);">로그인</h3>
+            <div style="margin-bottom: 25px;">
+                <h3 style="font-size:1.05rem; margin-bottom:12px; color:var(--primary);">로그인</h3>
                 <div class="input-group"><label>아이디</label><input type="text" id="login_id"></div>
                 <div class="input-group"><label>비밀번호</label><input type="password" id="login_pw"></div>
-                <button class="btn-action" onclick="handleLogin()">로그인하기</button>
+                <button class="btn-action" onclick="handleLogin()">시스템 로그인</button>
+                <div class="auth-links">
+                    <a onclick="openFindModal('id')">아이디 찾기</a>
+                    <a onclick="openFindModal('pw')">비밀번호 재설정</a>
+                </div>
             </div>
-            <hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
+            <hr style="border:0; border-top:1px solid var(--border); margin:25px 0;">
             <div>
-                <h3 style="font-size:1rem; margin-bottom:10px; color:var(--primary);">회원가입</h3>
-                <div class="input-group"><label>사용할 아이디</label><input type="text" id="reg_id"></div>
-                <div class="input-group"><label>닉네임 (커뮤니티 표시용)</label><input type="text" id="reg_nick"></div>
+                <h3 style="font-size:1.05rem; margin-bottom:12px; color:var(--primary);">신규 회원가입</h3>
+                <div class="input-group"><label>아이디</label><input type="text" id="reg_id"></div>
+                <div class="input-group"><label>닉네임 (커뮤니티 표시명)</label><input type="text" id="reg_nick"></div>
                 <div class="input-group"><label>비밀번호</label><input type="password" id="reg_pw"></div>
-                <button class="btn-action" style="background:#0f172a;" onclick="handleRegister()">회원가입 하기</button>
+                <button class="btn-action" style="background:#334155;" onclick="handleRegister()">회원가입 완료</button>
             </div>
         </div>
         <div id="auth-status" style="display:none; text-align:center; padding: 20px;">
-            <p id="logged-user-info" style="font-weight:bold; margin-bottom:15px;"></p>
-            <button class="btn-action" style="background:#ef4444;" onclick="handleLogout()">로그아웃</button>
+            <p id="logged-user-info" style="font-weight:bold; font-size:1.1rem; margin-bottom:15px;"></p>
+            <p id="admin-notice" style="color:var(--accent); font-size:0.9rem; margin-bottom:15px; display:none;">⭐ [관리자 권한 부여됨: 공식 정보글 작성 및 공지 등록 가능]</p>
+            <button class="btn-action" style="background:#ef4444; width:auto; padding:10px 25px;" onclick="handleLogout()">안전하게 로그아웃</button>
         </div>
     </div>
 
-    <!-- 5. 정보 및 커뮤니티 탭 -->
-    <div class="card" id="card-4">
-        <h2>사장님 정보 & 소통 커뮤니티</h2>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <p style="font-size:0.85rem; color:var(--text-sub);">실무 노하우 글을 읽고 자유롭게 소통해보세요.</p>
-            <button class="btn-action" style="width:auto; padding:8px 14px; margin-top:0;" onclick="showWriteForm()">글쓰기</button>
-        </div>
-
-        <!-- 글 작성 영역 (숨김 처리) -->
-        <div id="write-section" style="display:none; background:#f1f5f9; padding:15px; border-radius:8px; margin-bottom:15px;">
-            <h3 style="font-size:0.95rem; margin-bottom:10px; color:var(--primary);">새 글 작성하기</h3>
-            <div class="input-group"><label>제목</label><input type="text" id="post_title" placeholder="제목을 입력하세요"></div>
-            <div class="input-group"><label>내용</label><textarea id="post_content" placeholder="정보나 고민을 공유해주세요"></textarea></div>
-            <button class="btn-action" onclick="savePost()">등록하기</button>
-        </div>
-
-        <!-- 게시글 목록 -->
-        <div id="post-list-container">
-            <ul class="post-list" id="post-ul"></ul>
-        </div>
-
-        <!-- 게시글 상세 보기 영역 -->
-        <div id="post-detail-view" style="display:none;">
-            <button onclick="backToList()" style="padding:6px 12px; font-size:0.8rem; background:#e2e8f0; border:none; border-radius:4px; cursor:pointer; margin-bottom:10px;">← 목록으로</button>
-            <div class="post-detail">
-                <h3 id="detail-title" style="font-size:1.1rem; color:var(--primary); margin-bottom:8px;"></h3>
-                <p id="detail-meta" style="font-size:0.8rem; color:var(--text-sub); border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:12px;"></p>
-                <div id="detail-content" style="font-size:0.95rem; white-space: pre-line;"></div>
+    <div class="modal-overlay" id="findModal">
+        <div class="modal-card">
+            <h3 id="modal-title">아이디 찾기</h3>
+            <div id="find-id-section">
+                <p style="font-size:0.85rem; color:var(--text-sub); margin-bottom:10px;">가입 시 등록하신 닉네임을 입력하시면 아이디를 찾아드립니다.</p>
+                <div class="input-group"><label>가입 닉네임</label><input type="text" id="find_nick_input"></div>
+                <button class="btn-action" onclick="executeFindId()">아이디 확인</button>
+                <p id="result_found_id" style="margin-top:12px; font-weight:bold; color:var(--primary); text-align:center;"></p>
             </div>
+            <div id="find-pw-section" style="display:none;">
+                <p style="font-size:0.85rem; color:var(--text-sub); margin-bottom:10px;">아이디와 닉네임이 일치하면 새로운 비밀번호로 즉시 재설정합니다.</p>
+                <div class="input-group"><label>아이디</label><input type="text" id="find_pw_id"></div>
+                <div class="input-group"><label>닉네임</label><input type="text" id="find_pw_nick"></div>
+                <div class="input-group"><label>새 비밀번호</label><input type="password" id="new_pw_input"></div>
+                <button class="btn-action" onclick="executeResetPw()">비밀번호 재설정</button>
+                <p id="result_found_pw" style="margin-top:12px; font-weight:bold; color:var(--primary); text-align:center;"></p>
+            </div>
+            <button class="modal-close" onclick="closeFindModal()">닫기</button>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 Startup Kit. All rights reserved.</p>
-    </footer>
+    <footer><p>&copy; 2026 Startup Kit. All rights reserved.</p></footer>
 </div>
-
-<script>
-    // 초기화 및 로컬스토리지 연동 샘플 데이터 설정
-    document.addEventListener("DOMContentLoaded", () => {
-        initDefaultPosts();
-        checkLoginState();
-        loadPosts();
-    });
-
-    function switchTab(index) {
-        const cards = document.querySelectorAll('.card');
-        const buttons = document.querySelectorAll('.tab-btn');
-        cards.forEach((card, i) => {
-            if (i === index) { card.classList.add('active'); } 
-            else { card.classList.remove('active'); }
-        });
-        buttons.forEach((btn, i) => {
-            if (i === index) { btn.classList.add('active'); } 
-            else { btn.classList.remove('active'); }
-        });
-        document.getElementById('post-detail-view').style.display = 'none';
-        document.getElementById('post-list-container').style.display = 'block';
-    }
-
-    // --- 회원가입 및 로그인 시스템 (로컬스토리지 기반) ---
-    function handleRegister() {
-        const id = document.getElementById('reg_id').value.trim();
-        const nick = document.getElementById('reg_nick').value.trim();
-        const pw = document.getElementById('reg_pw').value.trim();
-        if(!id || !nick || !pw) { alert('모든 항목을 입력해주세요.'); return; }
-        
-        let users = JSON.parse(localStorage.getItem('startup_users') || '{}');
-        if(users[id]) { alert('이미 존재하는 아이디입니다.'); return; }
-
-        users[id] = { pw, nick };
-        localStorage.setItem('startup_users', JSON.stringify(users));
-        alert('회원가입 완료! 로그인해 주세요.');
-        document.getElementById('reg_id').value = '';
-        document.getElementById('reg_nick').value = '';
-        document.getElementById('reg_pw').value = '';
-    }
-
-    function handleLogin() {
-        const id = document.getElementById('login_id').value.trim();
-        const pw = document.getElementById('login_pw').value.trim();
-        let users = JSON.parse(localStorage.getItem('startup_users') || '{}');
-
-        if(!users[id] || users[id].pw !== pw) { alert('아이디 또는 비밀번호가 일치하지 않습니다.'); return; }
-
-        localStorage.setItem('startup_logged_user', JSON.stringify({ id, nick: users[id].nick }));
-        alert(`${users[id].nick}님 환영합니다!`);
-        checkLoginState();
-        switchTab(0);
-    }
-
-    function handleLogout() {
-        localStorage.removeItem('startup_logged_user');
-        checkLoginState();
-        alert('로그아웃되었습니다.');
-    }
-
-    function checkLoginState() {
-        const logged = JSON.parse(localStorage.getItem('startup_logged_user'));
-        const welcomeMsg = document.getElementById('welcome-msg');
-        const loginNavBtn = document.getElementById('login-nav-btn');
-        const authForms = document.getElementById('auth-forms');
-        const authStatus = document.getElementById('auth-status');
-        const loggedUserInfo = document.getElementById('logged-user-info');
-
-        if(logged) {
-            welcomeMsg.innerText = `${logged.nick} 님`;
-            loginNavBtn.style.display = 'none';
-            authForms.style.display = 'none';
-            authStatus.style.display = 'block';
-            loggedUserInfo.innerText = `현재 접속 계정: ${logged.nick} (${logged.id}) 형님`;
-        } else {
-            welcomeMsg.innerText = '로그인이 필요합니다';
-            loginNavBtn.style.display = 'inline-block';
-            authForms.style.display = 'block';
-            authStatus.style.display = 'none';
-        }
-    }
-
-    // --- 커뮤니티 및 정보글 시스템 ---
-    function initDefaultPosts() {
-        if(!localStorage.getItem('startup_posts')) {
-            const defaultPosts = [
-                {
-                    id: 1,
-                    title: '[필독] 초기 창업 패키지 및 세무사 활용 꿀팁 총정리',
-                    nick: '관리자',
-                    date: '2026-09-06',
-                    content: '안녕하세요! 사장님들을 위한 필수 가이드입니다. 초기에는 간이과세자로 시작해 매출 추이를 보고 전환하는 것이 유리하며, 기장료는 홈택스 셀프 신고로 아낄 수 있습니다.'
-                },
-                {
-                    id: 2,
-                    title: '직원 채용 시 4대보험 부담금 줄이는 방법 공유합니다',
-                    nick: '베테랑사장',
-                    date: '2026-09-06',
-                    content: '식대 등 비과세 급여 항목을 급여 명세서에 잘 분리해 두어야 사업주 부담 4대보험료를 절감할 수 있습니다. 위 인건비 계산기를 활용해 보세요!'
-                }
-            ];
-            localStorage.setItem('startup_posts', JSON.stringify(defaultPosts));
-        }
-    }
-
-    function loadPosts() {
-        const posts = JSON.parse(localStorage.getItem('startup_posts') || '[]');
-        const ul = document.getElementById('post-ul');
-        ul.innerHTML = '';
-        posts.forEach(post => {
-            const li = document.createElement('li');
-            li.className = 'post-item';
-            li.innerHTML = `
-                <div class="post-title">${post.title}</div>
-                <div class="post-meta">작성자: ${post.nick} | 등록일: ${post.date}</div>
-            `;
-            li.onclick = () => viewPost(post.id);
-            ul.appendChild(li);
-        });
-    }
-
-    function showWriteForm() {
-        const logged = JSON.parse(localStorage.getItem('startup_logged_user'));
-        if(!logged) { alert('글을 작성하려면 로그인이 필요합니다!'); switchTab(3); return; }
-        const writeSec = document.getElementById('write-section');
-        writeSec.style.display = writeSec.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function savePost() {
-        const logged = JSON.parse(localStorage.getItem('startup_logged_user'));
-        if(!logged) { alert('로그인이 만료되었거나 필요합니다.'); return; }
-
-        const title = document.getElementById('post_title').value.trim();
-        const content = document.getElementById('post_content').value.trim();
-        if(!title || !content) { alert('제목과 내용을 모두 입력해주세요.'); return; }
-
-        let posts = JSON.parse(localStorage.getItem('startup_posts') || '[]');
-        const newPost = {
-            id: Date.now(),
-            title,
-            nick: logged.nick,
-            date: new Date().toISOString().slice(0, 10),
-            content
-        };
-
-        posts.unshift(newPost);
-        localStorage.setItem('startup_posts', JSON.stringify(posts));
-        document.getElementById('post_title').value = '';
-        document.getElementById('post_content').value = '';
-        document.getElementById('write-section').style.display = 'none';
-        loadPosts();
-    }
-
-    function viewPost(id) {
-        const posts = JSON.parse(localStorage.getItem('startup_posts') || '[]');
-        const post = posts.find(p => p.id === id);
-        if(!post) return;
-
-        document.getElementById('detail-title').innerText = post.title;
-        document.getElementById('detail-meta').innerText = `작성자: ${post.nick} | 작성일: ${post.date}`;
-        document.getElementById('detail-content').innerText = post.content;
-
-        document.getElementById('post-list-container').style.display = 'none';
-        document.getElementById('write-section').style.display = 'none';
-        document.getElementById('post-detail-view').style.display = 'block';
-    }
-
-    function backToList() {
-        document.getElementById('post-detail-view').style.display = 'none';
-        document.getElementById('post-list-container').style.display = 'block';
-    }
-
-    // --- 기존 계산기 로직들 ---
-    function calcTax() {
-        const sales = parseFloat(document.getElementById('v_sales').value) || 0;
-        const purchase = parseFloat(document.getElementById('v_purchase').value) || 0;
-        const valueRate = parseFloat(document.getElementById('v_industry').value);
-        const ganiTax = Math.max(0, (sales * valueRate * 0.1) - (purchase * 0.1 * valueRate));
-        const generalTax = Math.max(0, (sales * 0.1) - (purchase * 0.1));
-
-        document.getElementById('res_gani').innerText = Math.round(ganiTax).toLocaleString() + ' 원';
-        document.getElementById('res_general').innerText = Math.round(generalTax).toLocaleString() + ' 원';
-        const diff = Math.abs(ganiTax - generalTax).toLocaleString();
-        document.getElementById('res_winner').innerText = ganiTax < generalTax ? `👉 간이과세자가 약 ${diff} 원 더 유리합니다!` : `👉 일반과세자가 약 ${diff} 원 더 유리합니다!`;
-        document.getElementById('tax-result').style.display = 'block';
-    }
-
-    function calcLabor() {
-        const salary = parseFloat(document.getElementById('p_salary').value) || 0;
-        const taxFree = parseFloat(document.getElementById('p_taxfree').value) || 0;
-        const taxable = Math.max(0, salary - taxFree);
-        const workerDeduct = Math.round(taxable * 0.09);
-        const netPay = salary - workerDeduct;
-        const bossInsurance = Math.round(taxable * 0.1015 + salary * 0.01);
-        const totalExpense = salary + bossInsurance;
-
-        document.getElementById('l_worker_deduct').innerText = workerDeduct.toLocaleString() + ' 원';
-        document.getElementById('l_net_pay').innerText = netPay.toLocaleString() + ' 원';
-        document.getElementById('l_boss_insurance').innerText = bossInsurance.toLocaleString() + ' 원';
-        document.getElementById('l_total_expense').innerText = `💡 사장님 최종 월 총지출: ${totalExpense.toLocaleString()} 원`;
-        document.getElementById('labor-result').style.display = 'block';
-    }
-
-    function calcDilution() {
-        const myShare = parseFloat(document.getElementById('s_my_share').value) || 0;
-        const partnerShare = parseFloat(document.getElementById('s_partner_share').value) || 0;
-        const investShare = parseFloat(document.getElementById('s_invest_share').value) || 0;
-        const dilutionFactor = (100 - investShare) / 100;
-
-        document.getElementById('d_my_final').innerText = (myShare * dilutionFactor).toFixed(2) + ' %';
-        document.getElementById('d_partner_final').innerText = (partnerShare * dilutionFactor).toFixed(2) + ' %';
-        document.getElementById('d_invest_final').innerText = investShare.toFixed(2) + ' %';
-        document.getElementById('dilution-result').style.display = 'block';
-    }
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
